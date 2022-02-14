@@ -13,7 +13,7 @@ static readonly string[] NET_CORE_AGENT_FILES = {
         "testcentric-agent.dll", "testcentric-agent.dll.config" };
 static readonly string[] GUI_FILES = {
         "testcentric.exe", "testcentric.exe.config", "nunit.uiexception.dll",
-        "TestCentric.Gui.Runner.dll", "TestCentric.Gui.Model.dll" };
+        "TestCentric.Gui.Runner.dll", "TestCentric.Gui.Model.dll", "Mono.Options.dll" };
 static readonly string[] TREE_ICONS_JPG = {
         "Success.jpg", "Failure.jpg", "Ignored.jpg", "Inconclusive.jpg", "Skipped.jpg" };
 static readonly string[] TREE_ICONS_PNG = {
@@ -33,6 +33,7 @@ var baseFiles = new string[]
     "TestCentric.Gui.Runner.dll",
     "nunit.uiexception.dll",
     "TestCentric.Gui.Model.dll",
+    "Mono.Options.dll",
     "nunit.engine.api.dll",
     "testcentric.engine.api.dll",
     "testcentric.engine.metadata.dll",
@@ -46,6 +47,7 @@ var PdbFiles = new string[]
     "TestCentric.Gui.Runner.pdb",
     "nunit.uiexception.pdb",
     "TestCentric.Gui.Model.pdb",
+    "Mono.Options.pdb",
     "testcentric.engine.api.pdb",
     "testcentric.engine.core.pdb",
     "testcentric.engine.pdb",
@@ -62,25 +64,17 @@ private void CreateZipImage(BuildParameters parameters)
 	CopyFiles(RootFiles, zipImageDir);
 
 	var copyFiles = new List<string>(baseFiles);
-	if (!parameters.UsingXBuild)
-		copyFiles.AddRange(PdbFiles);
 
 	CreateDirectory(zipImageBinDir);
 
-	foreach (string file in copyFiles)
-		CopyFileToDirectory(parameters.OutputDirectory + file, zipImageBinDir);
+    foreach (string file in copyFiles)
+        CopyFileToDirectory(parameters.OutputDirectory + file, zipImageBinDir);
 
     CopyFileToDirectory(parameters.ZipDirectory + "testcentric.zip.addins", parameters.ZipImageDirectory + "bin/");
 
     CopyDirectory(parameters.OutputDirectory + "Images", zipImageBinDir + "Images");
 
-	foreach (var runtime in parameters.SupportedAgentRuntimes)
-    {
-        var targetDir = zipImageBinDir + "agents/" + Directory(runtime);
-        var sourceDir = parameters.OutputDirectory + "agents/" + Directory(runtime);
-        CopyDirectory(sourceDir, targetDir);
-        CopyFileToDirectory(parameters.ZipDirectory + "testcentric-agent.zip.addins", $"{parameters.ZipImageDirectory}bin/agents/{runtime}");
-    }
+    CopyDirectory(parameters.OutputDirectory + "agents", zipImageBinDir + "agents");
 
     // NOTE: Files specific to a particular package are not copied
     // into the image directory but are added separately.

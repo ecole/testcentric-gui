@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
 	<PropertyGroup>
 		<RootNamespace>TestCentric.Gui.Model</RootNamespace>
 		<AssemblyName>TestCentric.Gui.Model</AssemblyName>
@@ -6,18 +7,17 @@
 		<OutputPath>..\..\..\bin\$(Configuration)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\testcentric.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
+  
 	<ItemGroup>
 		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
+  
 	<ItemGroup>
-		<ProjectReference Include="..\..\TestEngine\testcentric.engine.api\testcentric.engine.api.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="NUnit.Engine.Api">
-			<Version>4.0.0-dev-001</Version>
-		</PackageReference>
-	</ItemGroup>
+    <PackageReference Include="Mono.Options" Version="6.12.0.148" />
+    <PackageReference Include="NUnit.Engine.Api" Version="4.0.0-dev-05363" />
+    <PackageReference Include="TestCentric.Engine.Api" Version="2.0.0-dev00017" />
+    <PackageReference Include="TestCentric.Engine" Version="2.0.0-dev00017" />
+  </ItemGroup>
+  
 </Project>
